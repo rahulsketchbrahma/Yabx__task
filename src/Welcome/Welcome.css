@@ -21,7 +21,7 @@
     text-align: center;
 }
 .welcome__login{
-    width: 368px;
+    width: 588px;
     background-color: #ffffff;
     padding: 40px 0px;
     box-shadow: 1px 2px 24px -8px rgba(0, 0, 0, 0.08);
@@ -40,15 +40,40 @@
     margin: 30px;
     padding: 10px 20px;
     border-radius: 6px;
-    border: 1.5px solid rgb(115, 15, 255);;
-    outline: none;
+    border: 1.5px solid #CCCCCC;
+    
+}
+.welcome__input:focus{
+    outline-color: #EB6E7F
 }
 .welcome__button{
     color: white ;
-    background-color: rgb(115, 15, 255);;
+    background-color: #EB6E7F;
     font-weight: 600px;
     padding: 6px 20px;
-    border: 1px solid rgb(115, 15, 255);
+    border: 1px solid #EB6E7F;
     border-radius: 6px;
     width: 300px;
+}
+.Welcome__error{
+    width: 187px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.4rem;
+    height: 44px;
+    font-weight: 400;
+    font-size:14px;
+    margin: auto;
+    color: #E25050;
+   background-color: #FEF6F6;
+   padding: 0px 20px ;
+   margin-bottom: 20px;
+   border-radius: 6px;
+}
+
+@media only screen and (max-width: 625px){
+    .welcome__login{
+        width: 368px;
+    }
 }

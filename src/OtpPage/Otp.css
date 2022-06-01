@@ -22,7 +22,7 @@
     text-align: center;
 }
 .otp__login{
-    width: 368px;
+    width: 588px;
     background-color: #ffffff;
     padding: 40px 0px;
     box-shadow: 1px 2px 24px -8px rgba(0, 0, 0, 0.08);
@@ -42,16 +42,51 @@
     margin: 0px 5px 50px 5px;
     padding: 10px;
     border-radius: 6px;
-    border: 1.5px solid rgb(115, 15, 255);;
+    border: 1.5px solid #CCCCCC;
     outline: none;
     width: 20px;
 }
 .otp__button{
     color: white ;
-    background-color: rgb(115, 15, 255);;
     font-weight: 600px;
     padding: 6px 20px;
     border: 1px solid rgb(115, 15, 255);
     border-radius: 6px;
     width: 300px;
+    background-color: #EB6E7F;
+    border: 1px solid #EB6E7F ;
+}
+.otp__button__disable{
+    color:#999999 ;
+    font-weight: 600px;
+    padding: 6px 20px;
+    border: 1px solid rgb(115, 15, 255);
+    border-radius: 6px;
+    width: 300px;
+    background-color: #E6E6E6;
+    border: 1px solid #E6E6E6 ;
+
+}
+.otp__gen{
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;  
+    margin: 10px;
+}
+.otp__counter{
+    color: #808080;
+}
+.otp__resend__button{
+    background:none;
+    border: none;
+    color: #EB6E7F;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 24px;
+}
+@media only screen and (max-width: 625px){
+    .otp__login{
+        width: 340px;
+    }
 }

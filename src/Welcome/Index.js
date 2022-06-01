@@ -2,6 +2,7 @@ import React,{useState} from 'react'
 import './Welcome.css'
 import Logo from  '../assets/image3.png'
 import{useNavigate} from 'react-router-dom'
+import ErrorLogo from '../assets/Vector.png'
 
 function Welcome() {
     const navigate = useNavigate()
@@ -40,10 +41,11 @@ function Welcome() {
                         <h1>Welcome to YABX</h1>
                         <p>Please enter your mobile number</p>
                         <input type="text" value={number} onChange={handleNumber} className='welcome__input'/><br />
-                        {errorNumber && <div><p>{errorNumber}</p></div>}
+                        {errorNumber && <div><p className='Welcome__error'><span><img src= {ErrorLogo}/></span>{errorNumber}</p></div>}
                         <button type="submit" className='welcome__button'>Send OTP</button>
                         </form>
                     </div>
+                   
                 </div>
             </div>
         </div>   
