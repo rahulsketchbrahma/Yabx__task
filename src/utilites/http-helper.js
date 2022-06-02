@@ -1,6 +1,4 @@
 import axios from 'axios';
-
-import { forceLogout } from './user-helper';
 import { getCookie } from './cookie-helper';
 
 export const sendRequest = async (args) => {
@@ -26,9 +24,7 @@ export const sendRequest = async (args) => {
     });
     return response;
   } catch (error) {
-    if (error.response.status === 401) {
-      forceLogout();
-    }
+    
 
     return { error };
   }

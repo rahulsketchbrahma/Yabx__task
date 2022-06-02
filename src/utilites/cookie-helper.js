@@ -1,5 +1,7 @@
 import Cookie from 'js-cookie';
 
+
+
 export const getCookie = (key) => {
   const storage = Cookie.get(key);
   return storage || '';
