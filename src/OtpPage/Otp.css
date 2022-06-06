@@ -85,6 +85,23 @@
     font-size: 11px;
     line-height: 24px;
 }
+.OTP__error{
+    width: 120px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+    gap: 0.4rem;
+    height: 44px;
+    font-weight: 400;
+    font-size:14px;
+    margin: auto;
+    color: #E25050;
+   background-color: #FEF6F6;
+   padding: 0px 20px ;
+   margin-bottom: 20px;
+   border-radius: 6px;
+    }
 @media only screen and (max-width: 625px){
     .otp__login{
         width: 340px;

@@ -31,8 +31,8 @@ function Welcome() {
         partner_code: LMS_PARTNER_CODE,
         purpose: "customer_verification",
       };
-      getGeneralOtp(otp).then((res) => {
-        console.log(res.data);
+      getGeneralOtp(otp).then(() => {
+        saveCookie("otp", number);
       });
 
       navigate("/otp");
