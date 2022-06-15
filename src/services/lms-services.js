@@ -12,12 +12,11 @@ const lmsStandardHeaders = {
   os: LMS_OS,
   "package-id": LMS_PACKAGE_ID,
 };
-
 export const getAccessToken = async (data) => {
   return await postRequest({
     url: NEW_TOKEN,
     data: data,
-    noAuth: true,
+    noAuth: false,
     headers: lmsStandardHeaders,
   });
 };
@@ -25,7 +24,6 @@ export const getGeneralOtp = async (data) => {
   return await postRequest({
     url: GENERATE_OTP,
     data: data,
-    noAuth: true,
     headers: lmsStandardHeaders,
   });
 };
@@ -33,7 +31,6 @@ export const getVerifyOtp = async (data) => {
   return await postRequest({
     url: VERIFY_OTP,
     data: data,
-    noAuth: true,
     headers: lmsStandardHeaders,
   });
 };
@@ -41,7 +38,6 @@ export const getResentOtp = async (data) => {
   return await postRequest({
     url: RESENT_OTP,
     data: data,
-    noAuth: true,
     headers: lmsStandardHeaders,
   });
 };

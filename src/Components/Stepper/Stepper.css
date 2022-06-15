@@ -1,0 +1,28 @@
+.stepper__container{
+    display: flex;
+    width: 
+    794px;
+    margin: auto;
+    border: 1px solid red;
+    justify-content: space-around;
+    
+    padding: 20px;
+}
+.stepper{
+    display: flex;
+    gap: 5px;
+    padding-left: 10px; 
+}
+
+.stepper span {
+    background-color: blue;
+    border-radius: 50%;
+    color: white;
+    width: 24px;
+    height: 24px;
+    text-align: center;
+}
+
+.stepper p {
+    font-size: 12px;
+}

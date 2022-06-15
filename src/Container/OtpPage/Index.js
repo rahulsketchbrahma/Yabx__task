@@ -7,8 +7,8 @@ import { LMS_PARTNER_CODE } from "../../constants";
 import { getVerifyOtp, getResentOtp } from "../../services/lms-services";
 import { getWorkFLow } from "../../workflow/workflow";
 import { getCookie } from "../../utilites/cookie-helper";
-import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Otp() {
@@ -59,8 +59,8 @@ function Otp() {
       toast.warning(res.data.message);
     });
   };
-
   const targetAPI = () => {
+    console.log("name");
     const getOTP = getCookie("otp");
     let targetAPI = {
       msisdn: getOTP,
@@ -69,10 +69,14 @@ function Otp() {
       workflow_name: "Mother Workflow",
     };
     getWorkFLow(targetAPI).then((res) => {
-      saveCookie("targetUUID", res.data.data.uuid);
+      saveCookie("UUID", res.data.data.uuid);
 
       if (res.data.data.actions[0].action === "consumer_app_journey") {
         navigate("/consumer-app-journey");
+      }
+
+      if (res.data.data.actions[0].action === "choose_loan_journey") {
+        navigate("/loan-journey");
       }
     });
   };

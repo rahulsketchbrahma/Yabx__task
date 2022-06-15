@@ -1,42 +1,62 @@
-import React from "react";
-import "./CAJ.css";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { ACTIVE_KYC_ID } from "../../constants";
+import ErrorLogo from "../../assets/Vector.png";
+import { getTarget, getOutcome } from "../../workflow/workflow";
+import { getCookie } from "../../utilites/cookie-helper";
 import {
   KYCdefinition,
   KYCresponsefields,
 } from "../../KYC services/KycServices";
-import { ACTIVE_KYC_ID } from "../../constants/index";
-import ErrorLogo from "../../assets/Vector.png";
-import { getCookie } from "../../utilites/cookie-helper";
-import { getTarget, getOutcome } from "../../workflow/workflow";
+import "./Loan.css";
 import { useNavigate } from "react-router-dom";
 
-function ConsumerAPPJourney() {
-  const [kycData, setKycData] = useState();
-  const [kyc, setKyc] = useState();
-  const [optionMap, setOptionMap] = useState();
-  const [radioValue, setRadioValue] = useState();
-  const [customerError, setCustomerError] = useState();
+const Loan = () => {
+  const [customArr, setCustomArr] = useState();
+  const [newCustomArr, setNewCustomArr] = useState();
   const [fieldDisplay, setFieldDisplay] = useState();
-  const [version, setVersion] = useState();
+  const [optionValue, setOptionValue] = useState();
+  const [inputValue, setInputValue] = useState();
+  const [error, setError] = useState();
   const [newUUID, setNewUUID] = useState();
+  const [version, setVersion] = useState();
   const navigate = useNavigate();
 
+  //TargetAPi
+
+  const targetAPIs = () => {
+    const targetAPI = {
+      uuid: getCookie("UUID"),
+    };
+    console.log(targetAPI);
+    getTarget(targetAPI).then((res) => {
+      const action = res.data.actions[0].action;
+      const uuid = res.data.actions[0].uuid;
+
+      if (action === "choose_loan_journey") {
+        setNewUUID(uuid);
+      }
+      console.log(newUUID);
+    });
+  };
   useEffect(() => {
-    const data = {
+    targetAPIs();
+  }, []);
+
+  //GetKYCdefintion() , Link both url and uuid
+  useEffect(() => {
+    const dataID = {
       id: ACTIVE_KYC_ID,
     };
-
-    KYCdefinition(data).then((res) => {
+    KYCdefinition(dataID).then((res) => {
       const id = res.data.data.packagesDTOs;
       const version = res.data.data.version;
       setVersion(version);
 
-      const name = id.find((item) => {
-        return item.id === "623c14b496036905dccfbf79";
+      const Unsecuredid = id.find((item) => {
+        return item.id === "622848275ad3b33196cb2ede";
       });
-      const newArray = name.children;
-      const newArr = newArray.map((iteam) => {
+      const newData = Unsecuredid.children;
+      const customArr = newData.map((iteam) => {
         return {
           id: iteam.id,
           fieldName: iteam.fieldName,
@@ -47,28 +67,30 @@ function ConsumerAPPJourney() {
           type: iteam.type,
         };
       });
-
-      setKycData(newArr);
-      setKyc(newArr[0]);
-      setFieldDisplay(newArr[0].fieldName);
-      setOptionMap(newArr[0].options);
+      setCustomArr(customArr);
+      setNewCustomArr(customArr[0]);
+      setFieldDisplay(customArr[0].fieldName);
+      setOptionValue(customArr[0].options);
     });
-  }, [setKycData, setOptionMap, setKyc]);
+  }, [setCustomArr, setOptionValue, setNewCustomArr]);
 
+  //get value of radio button once clicked
   const handleValue = (e) => {
-    setRadioValue(e.target.value);
+    setInputValue(e.target.value);
+    console.log(e.target.value);
   };
 
-  const radioFunc = (e) => {
+  //onsubmit,
+  const loanSubmit = (e) => {
     e.preventDefault();
-    if (kyc.mandatory === true && radioValue === undefined) {
-      setCustomerError("Customer app option is required");
+    if (newCustomArr.mandatory === true && inputValue === undefined) {
+      setError("Unsecured Product Based Journey is required");
     } else {
       KYCresponsefieldsAPI();
     }
   };
 
-  //
+  //Submit KYCresponsefieldsAPI with fields in body
   const KYCresponsefieldsAPI = () => {
     const getOTP = getCookie("otp");
 
@@ -78,8 +100,8 @@ function ConsumerAPPJourney() {
       data: {},
       version: version,
     };
-    KYCresponsefieldsAP["data"][fieldDisplay] = radioValue;
-    console.log(KYCresponsefieldsAP);
+    KYCresponsefieldsAP["data"][fieldDisplay] = inputValue;
+
     KYCresponsefields(KYCresponsefieldsAP).then((res) => {
       const data = res.data.statusCode;
 
@@ -89,37 +111,7 @@ function ConsumerAPPJourney() {
     });
   };
 
-  const targetAPIs = () => {
-    const targetAPI = {
-      uuid: getCookie("UUID"),
-    };
-    getTarget(targetAPI).then((res) => {
-      const action = res.data.actions[0].action;
-      const uuid = res.data.actions[0].uuid;
-
-      if (action === "consumer_app_journey") {
-        setNewUUID(uuid);
-      }
-    });
-  };
-  useEffect(() => {
-    targetAPIs();
-  }, []);
-
-  const loanAPIs = () => {
-    const targetAPI = {
-      uuid: getCookie("UUID"),
-    };
-    getTarget(targetAPI).then((res) => {
-      const action = res.data.actions[0].action;
-      console.log(res.data.actions[0], "loan");
-
-      if (action === "choose_loan_journey") {
-        navigate("/loan-journey");
-      }
-    });
-  };
-
+  //outcomeAPI
   const outcome = () => {
     let outcomeAPI = {
       uuid: newUUID,
@@ -127,13 +119,32 @@ function ConsumerAPPJourney() {
     console.log(newUUID);
 
     let data = {};
-    data[fieldDisplay] = radioValue;
+    data[fieldDisplay] = inputValue;
     console.log(data, "data");
     console.log(outcomeAPI, "opo");
     getOutcome(outcomeAPI, data).then((res) => {
       console.log(res.status, "outcome");
       if (res.status === 200) {
-        loanAPIs();
+        loanJourneyAPIs();
+      }
+    });
+  };
+
+  //targetAPI, Navigate
+  const loanJourneyAPIs = () => {
+    const loanJourney = {
+      uuid: getCookie("UUID"),
+    };
+    getTarget(loanJourney).then((res) => {
+      const action = res.data.actions[0].action;
+      console.log(res.data, "loan");
+      console.log(res.data, "kycres");
+
+      if (action === "consumer_loan_journey") {
+        navigate("/consumer-loan-journey");
+      }
+      if (action === "loan_simulator") {
+        navigate("/loan-details");
       }
     });
   };
@@ -144,8 +155,8 @@ function ConsumerAPPJourney() {
         <div className="CAJ__container">
           <div className="CAJ__background">
             <div className="CAJ__card">
-              {kycData?.map((data, id) => (
-                <form key={id} onSubmit={radioFunc}>
+              {customArr?.map((data, id) => (
+                <form key={id} onSubmit={loanSubmit}>
                   <div className="CAJ__card__details">
                     <h3>Welcome to YABX</h3>
                     {data.mandatory === true ? (
@@ -157,19 +168,19 @@ function ConsumerAPPJourney() {
 
                     <div className="CAJ__options">
                       <div className="selector">
-                        {optionMap.map((data, id) => (
+                        {optionValue.map((data, id) => (
                           <div className="selecotr-item" key={id}>
                             <input
                               type="radio"
                               id={data.display}
+                              value={data.value}
                               name="selector"
                               className="selector-item_radio"
-                              value={data.value}
                               onChange={handleValue}
                             />
                             <label
                               htmlFor={data.display}
-                              className="selector-item_label"
+                              className="selector-item_label_loan"
                             >
                               {data.display}
                             </label>
@@ -178,13 +189,13 @@ function ConsumerAPPJourney() {
                       </div>
                     </div>
                   </div>
-                  {customerError && (
+                  {error && (
                     <div>
                       <p className="CAJ__error">
                         <span>
                           <img src={ErrorLogo} />
                         </span>
-                        {customerError}
+                        {error}
                       </p>
                     </div>
                   )}
@@ -199,6 +210,6 @@ function ConsumerAPPJourney() {
       </div>
     </>
   );
-}
+};
 
-export default ConsumerAPPJourney;
+export default Loan;
