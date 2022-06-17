@@ -3,7 +3,6 @@
     width: 
     794px;
     margin: auto;
-    border: 1px solid red;
     justify-content: space-around;
     
     padding: 20px;
@@ -13,16 +12,35 @@
     gap: 5px;
     padding-left: 10px; 
 }
+.greycolorValue{
+    background-color: transparent;
+    color: black;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+}
 
-.stepper span {
+.redValue{
+    color: blue;
+}
+
+/* .stepper span {
     background-color: blue;
     border-radius: 50%;
     color: white;
     width: 24px;
     height: 24px;
     text-align: center;
+} */
+.greycolor{
+    background-color: rgb(86, 86, 95);
+    border-radius: 50%;
+    color: white;
+    width: 24px;
+    height: 24px;
+    text-align:center;
 }
+.red{
+    background-color: rgb(51, 0, 255) !important;
 
-.stepper p {
-    font-size: 12px;
 }
