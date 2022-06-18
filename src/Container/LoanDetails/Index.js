@@ -135,48 +135,92 @@ function LoanDetails() {
                             })}
                         </div>
                         <div className="loan__simulator__content__left">
-                          <div className="loan__simulator__content__left__flex">
-                            <h4>Expected repayment time in months</h4>
-                            <input type="number" value={rangeYears} disabled />
-                          </div>
-                          <div className="loan__simulator__content__left__range">
-                            <input
-                              type="range"
-                              id="year"
-                              min={minYear}
-                              max={maxYear}
-                              value={rangeYears}
-                              onChange={rangeYear}
-                            />
-                          </div>
-                          <div className="loan__simulator__content__left__range__values">
-                            <p>{rangeYears}</p>
-                            <p>{maxYear}Year</p>
-                          </div>
-                          <div>
-                            <div className="loan__simulator__content__left__EIR">
-                              <label htmlFor="input">
-                                Expected EMI ammount
-                                <input id="input" type="text" />
-                              </label>
-                            </div>
-                          </div>
+                          {RequiredLoanAmmount &&
+                            RequiredLoanAmmount.map((res) => {
+                              if (
+                                res.fieldDisplayName ===
+                                "Expected repayment time in months"
+                              ) {
+                                return (
+                                  <>
+                                    <div className="loan__simulator__content__left__flex">
+                                      <h4>
+                                        {res.fieldDisplayName}
+                                        {res.mandatory ? (
+                                          <span style={{ color: "red" }}>
+                                            *
+                                          </span>
+                                        ) : (
+                                          ""
+                                        )}
+                                      </h4>
+
+                                      <input
+                                        type="number"
+                                        value={rangeYears}
+                                        disabled
+                                      />
+                                    </div>
+                                    <div className="loan__simulator__content__left__range">
+                                      <input
+                                        type="range"
+                                        id="year"
+                                        min={minYear}
+                                        max={maxYear}
+                                        value={rangeYears}
+                                        onChange={rangeYear}
+                                      />
+                                    </div>
+                                    <div className="loan__simulator__content__left__range__values">
+                                      <p>{rangeYears}</p>
+                                      <p>{maxYear}Year</p>
+                                    </div>
+                                  </>
+                                );
+                              }
+                              if (
+                                res.fieldDisplayName === "Expected EMI amount"
+                              ) {
+                                return (
+                                  <div>
+                                    <div className="loan__simulator__content__left__EIR">
+                                      <label htmlFor="input">
+                                        {res.fieldDisplayName}
+                                        <input id="input" type="text" />
+                                      </label>
+                                    </div>
+                                  </div>
+                                );
+                              }
+                            })}
                         </div>
                       </div>
                     </div>
                     <div className="loan__simulator__content__left__LP__flex">
                       <div className="loan__simulator__content__left__LP">
-                        <label htmlFor="input">
-                          Loan Purpose
-                          <select>
-                            <option value="1">
-                              Choose the purpose of loan
-                            </option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                          </select>
-                        </label>
+                        {RequiredLoanAmmount &&
+                          RequiredLoanAmmount.map((res) => {
+                            if (res.fieldDisplayName === "Loan Purpose") {
+                              return (
+                                <label htmlFor="input">
+                                  {res.fieldDisplayName}
+                                  <select>
+                                    <option disabled>
+                                      Choose the purpose of loan
+                                    </option>
+                                    {res.options &&
+                                      res.options.map((option) => {
+                                        return (
+                                          <option value={option.value}>
+                                            {option.display}
+                                          </option>
+                                        );
+                                      })}
+                                  </select>
+                                </label>
+                              );
+                            }
+                          })}
                       </div>
                     </div>
                   </div>
