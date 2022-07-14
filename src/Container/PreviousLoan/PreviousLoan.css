@@ -1,0 +1,180 @@
+.previousLoan__background{
+    background: url('../../assets/Topology-.png');
+    height:130vh;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-color: #F6F8FE;
+}
+.previousLoan__background__edit{
+    background: url('../../assets/Topology-.png');
+    height:100vh;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-color: #F6F8FE;
+}
+.previousLoan__stepper{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    margin-top: 30px;
+}
+.previousLoan__content__wrapper{
+    background-color: rgb(255, 255, 255);
+    width:794px;
+    height: auto;
+    margin: auto;
+    box-shadow: 1px 2px 24px -8px rgba(0, 0, 0, 0.08);
+    border-radius: 6px;
+    padding: 40px;
+}
+.previousLoan__content__wrapper h3{
+    font-style: normal;
+    font-weight: 600;
+    line-height: 36px;
+}
+.previousLoan__content__wrapper p{
+    font-size: 12px;
+    line-height: 36px;
+}
+.previousLoan__content__wrapper select{
+    display: block;
+    width: 100%;
+    padding: 8px;
+    border-radius: 3px;
+    border: 2px solid #E6E6E6; 
+    margin-bottom: 20px;
+    background: #FCFCFC;
+}
+.previous__loan__form__content{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2.5rem;
+}
+.label__block input{
+    display: block;
+    padding: 5px;
+    border-radius: 3px;
+    border: 2px solid #E6E6E6; 
+    width: 100%;
+    background: #FCFCFC;
+    margin-bottom: 50px;
+}
+.label__block , .label__block__default ,.Edit__block {
+    font-size: 12px;
+}
+.previous__loan__form {
+    border: 3px solid #EB6E7F;
+    padding: 30px;
+    border-radius: 4px;
+}
+.previous__loan__form__edit{
+    padding: 30px;
+    border-radius: 4px;
+}
+.label__block__default input{
+    display: block;
+    padding: 5px;
+    border-radius: 3px;
+    width: 90%;
+    border: 2px solid #E6E6E6; 
+    height: 15vh;
+    background: #FCFCFC;
+    margin-bottom: 30px;
+}
+.buttons{
+    width: 55%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+.previousLoan__button__right{
+    background-color: #EB6E7F;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    width: 200px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+.previousLoan__button__left{
+    background-color:transparent;
+    border: none;
+    color: #EB6E7F;
+    border: 1px solid #EB6E7F;
+    padding: 10px 20px;
+    width: 200px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+.prgress_value{
+    display: none;
+}
+.Body__wrapper__flex{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+}
+.Edit__block input{
+    display: block;
+    padding: 5px;
+    border: 1px solid #E6E6E6;
+    border-radius: 5px;
+    outline: none; 
+    width: 100%;
+    background: #FCFCFC;
+}
+.previousLoan__content__wrapper__header{
+    display: flex;
+    justify-content: space-between;
+}
+.previousLoan__content__wrapper__header button{
+    background-color:transparent;
+    color: #EB6E7F;
+    border: 1px solid #EB6E7F;
+    padding: 6px 30px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+@media only screen and (max-width: 887px) {
+    .prgress_value{
+            display: block;
+            width: 350px;
+            height: 4px;
+            margin: auto;
+            background-color:#E5E9FB;
+            background: linear-gradient(to right, #EB6E7F 30%, #E5E9FB 30%);
+            border-radius: 5px;
+            margin-bottom: 40px;
+        }
+        .previousLoan__content__wrapper {
+            width: 517px;
+        }
+        .buttons{
+            display: block;
+            text-align: center;
+        }
+        .previousLoan__content__wrapper__header h3{
+            font-size: 15px;
+        }
+}
+
+@media only screen and (max-width: 612px) {
+    .previousLoan__content__wrapper {
+        width: 280px;
+    }
+    .previous__loan__form__content{
+        display: block;
+    }
+    .Body__wrapper__flex{
+        display: block;
+    }
+
+}

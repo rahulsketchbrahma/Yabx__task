@@ -50,10 +50,15 @@ export const KYCresponses = async (data) => {
   });
 };
 
-export const KYCresponsesbody = async (data) => {
+export const KYCresponsesbody = async (params) => {
+  const newURLL = attachParams(KYC_responses_body, params);
+
   return await getRequest({
-    url: KYC_responses_body,
-    data: data,
+    url: newURLL,
+    data: {},
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 };
 

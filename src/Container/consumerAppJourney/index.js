@@ -31,6 +31,7 @@ function ConsumerAPPJourney() {
       const id = res.data.data.packagesDTOs;
       const version = res.data.data.version;
       setVersion(version);
+      console.log(res);
 
       const name = id.find((item) => {
         return item.id === "623c14b496036905dccfbf79";

@@ -6,11 +6,16 @@ import { useNavigate } from "react-router-dom";
 import ErrorLogo from "../../assets/Vector.png";
 import { getAccessToken, getGeneralOtp } from "../../services/lms-services";
 import { LMS_CLIENT_SECRET, LMS_PARTNER_CODE } from "../../constants/index";
-
+import { useSelector, useDispatch } from "react-redux";
+import { SetProduct } from "../../redux/products/ActionCreater";
 function Welcome() {
   const navigate = useNavigate();
   const [number, setNumber] = useState("");
   const [errorNumber, setErrorNumber] = useState("");
+
+  const products = useSelector((state) => state.allProducts.products.data);
+  let dispatch = useDispatch();
+  console.log(products);
 
   const handleNumber = (e) => {
     setNumber(e.target.value);
@@ -44,11 +49,14 @@ function Welcome() {
     };
     getAccessToken(Token).then((response) => {
       saveCookie("token", response.data.access_token);
+      dispatch(SetProduct(response));
     });
   };
   useEffect(() => {
     Apiaccess();
   }, []);
+
+  //
 
   return (
     <div className="welcome__wrapper">
@@ -59,6 +67,7 @@ function Welcome() {
             <div className="welcome__login">
               <form className="welcome__form" onSubmit={welcomeSubmit}>
                 <h1>Welcome to YABX</h1>
+                <h1>{products.access_token}</h1>
                 <p>Please enter your mobile number</p>
                 <input
                   type="text"

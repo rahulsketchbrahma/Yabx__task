@@ -6,6 +6,8 @@ import { ToastContainer } from "react-toastify";
 import ConsumerAPPJourney from "../Container/consumerAppJourney/index";
 import Loan from "../Container/Loan/Index";
 import LoanDetails from "../Container/LoanDetails/Index";
+import Index from "../Container/PreviousLoan/Index";
+import PreviousLoan from "../Container/PreviousLoan/PreviousLoan";
 
 function Router() {
   return (
@@ -16,6 +18,7 @@ function Router() {
         <Route path="/consumer-app-journey" element={<ConsumerAPPJourney />} />
         <Route path="/loan-journey" element={<Loan />} />
         <Route path="/loan-details" element={<LoanDetails />} />
+        <Route path="/previous-loan-details" element={<PreviousLoan />} />
       </Routes>
       <ToastContainer
         position="top-center"

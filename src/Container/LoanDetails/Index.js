@@ -3,19 +3,23 @@ import "./LoanDetails.css";
 import Navbar from "../../Components/Navbar/Index";
 import Stepper from "../../Components/Stepper/Index";
 import { ACTIVE_KYC_ID } from "../../constants";
-import {
-  KYCdefinition,
-  KYCresponsefields,
-} from "../../KYC services/KycServices";
+import { KYCdefinition } from "../../KYC services/KycServices";
+import ErrorLogo from "../../assets/Vector.png";
+import { useNavigate } from "react-router-dom";
 
 function LoanDetails() {
   const [rangeValues, setRangeValues] = useState(0);
-  const [rangeYears, setRangeYears] = useState(1);
+  const [rangeYears, setRangeYears] = useState(0);
+  const [intrestAmmount, setIntrestAmmount] = useState();
   const [RequiredLoanAmmount, setRequiredLoanAmmount] = useState();
+  const [emiammount, setEMiAmmount] = useState();
+  const [Error, setError] = useState();
+  const [optionValues, setOptionValues] = useState("");
+  const navigate = useNavigate();
   const minValue = 0;
   const maxValue = 100000;
-  const minYear = 1;
-  const maxYear = 5;
+  const minYear = 0;
+  const maxYear = 60;
 
   //Simple UI functionality
   const rangeValue = (e) => {
@@ -23,6 +27,7 @@ function LoanDetails() {
   };
   const rangeYear = (e) => {
     setRangeYears(e.target.value);
+    console.log(e.target.value, "p");
   };
 
   //GetKYCdefintion() , Link both url and uuid
@@ -54,6 +59,56 @@ function LoanDetails() {
     });
   }, []);
 
+  const intrestfunc = (e) => {
+    setIntrestAmmount(e.target.value);
+  };
+
+  useEffect(() => {
+    emmiValue();
+  }, [rangeValues, intrestAmmount, rangeYears]);
+
+  const emmiValue = () => {
+    console.log(rangeValues, "rangeValue");
+    console.log(intrestAmmount, "intrestAmmount");
+    console.log(rangeYears, "rangeYears");
+
+    //EMI CALCULATION FORMULA
+    const loanAmount = eval(rangeValues);
+    const interestRate = eval(intrestAmmount / 1200);
+    const numberOfMonths = eval(rangeYears * 12);
+    const result =
+      eval(loanAmount * interestRate) /
+      (1 - Math.pow(1 + interestRate, numberOfMonths * -1)).toFixed(2);
+    //
+
+    if (isNaN(result) || !isFinite(result)) {
+      setEMiAmmount(0);
+      return;
+    } else {
+      setEMiAmmount(result);
+      return;
+    }
+  };
+
+  const optionValue = (e) => {
+    setOptionValues(e.target.value);
+  };
+
+  const detailsSubmit = (e) => {
+    e.preventDefault();
+    if (rangeValues === 0) {
+      setError("Loan Ammont is Required");
+    } else if (rangeYears === 0) {
+      setError("Repayment time is Required");
+    } else if (intrestAmmount === undefined) {
+      setError("Intrest Ammount is Required");
+    } else if (optionValues === "") {
+      setError("Choose the purpose of the loan");
+    } else {
+      navigate("/previous-loan");
+    }
+  };
+
   return (
     <div>
       <div className="loan__simulation__wrapper">
@@ -61,11 +116,12 @@ function LoanDetails() {
           <div>
             <Navbar />
           </div>
-          <form>
+          <form onSubmit={detailsSubmit}>
             <div className="loan__stepper">
               <div>
                 <div>
-                  <Stepper initial={1} />
+                  <Stepper initial={1} name={"Loan Simulator"} />
+                  <div className="prgress_value__one" />
                 </div>
                 <div className="loan__simulator__pls__wrapper">
                   <div className="loan__simulator__pls">
@@ -76,45 +132,42 @@ function LoanDetails() {
                       <div className="loan__simulator__content">
                         <div className="loan__simulator__content__left">
                           {RequiredLoanAmmount &&
-                            RequiredLoanAmmount.map((res) => {
-                              if (
-                                res.fieldDisplayName === "Required Loan Amount"
-                              ) {
+                            RequiredLoanAmmount.map((res, id) => {
+                              if (res.fieldName === "required_loan_amount") {
                                 return (
-                                  <>
-                                    <div className="loan__simulator__content__left__flex">
-                                      <h4>
-                                        {res.fieldDisplayName}
-                                        {res.mandatory ? (
-                                          <span style={{ color: "red" }}>
-                                            *
-                                          </span>
-                                        ) : (
-                                          ""
-                                        )}
-                                      </h4>
+                                  <div key={id}>
+                                    <div>
+                                      <div className="loan__simulator__content__left__flex">
+                                        <h4>
+                                          {res.fieldDisplayName}
+                                          {res.mandatory ? (
+                                            <span style={{ color: "red" }}>
+                                              *
+                                            </span>
+                                          ) : (
+                                            ""
+                                          )}
+                                        </h4>
 
-                                      <input
-                                        type="number"
-                                        value={rangeValues}
-                                        disabled
-                                      />
+                                        <input value={rangeValues} disabled />
+                                      </div>
+                                      <div className="loan__simulator__content__left__range">
+                                        <input
+                                          type="range"
+                                          id="value"
+                                          min={minValue}
+                                          max={maxValue}
+                                          value={rangeValues}
+                                          className="slider"
+                                          onChange={rangeValue}
+                                        />
+                                      </div>
+                                      <div className="loan__simulator__content__left__range__values">
+                                        <p>&#8377;0</p>
+                                        <p>&#8377;1000000</p>
+                                      </div>
                                     </div>
-                                    <div className="loan__simulator__content__left__range">
-                                      <input
-                                        type="range"
-                                        id="value"
-                                        min={minValue}
-                                        max={maxValue}
-                                        value={rangeValues}
-                                        onChange={rangeValue}
-                                      />
-                                    </div>
-                                    <div className="loan__simulator__content__left__range__values">
-                                      <p>&#8377;{rangeValues}</p>
-                                      <p>&#8377;{maxValue}</p>
-                                    </div>
-                                  </>
+                                  </div>
                                 );
                               }
                               if (
@@ -122,11 +175,18 @@ function LoanDetails() {
                                 "Expected Interest Rate"
                               ) {
                                 return (
-                                  <div>
-                                    <div className="loan__simulator__content__left__EIR">
+                                  <div key={id}>
+                                    <div
+                                      className="loan__simulator__content__left__EIR"
+                                      key={id}
+                                    >
                                       <label htmlFor="input">
                                         {res.fieldDisplayName}
-                                        <input id="input" type="text" />
+                                        <input
+                                          id="input"
+                                          type="text"
+                                          onChange={intrestfunc}
+                                        />
                                       </label>
                                     </div>
                                   </div>
@@ -136,13 +196,13 @@ function LoanDetails() {
                         </div>
                         <div className="loan__simulator__content__left">
                           {RequiredLoanAmmount &&
-                            RequiredLoanAmmount.map((res) => {
+                            RequiredLoanAmmount.map((res, id) => {
                               if (
-                                res.fieldDisplayName ===
-                                "Expected repayment time in months"
+                                res.fieldName ===
+                                "expected_repayment_period_months"
                               ) {
                                 return (
-                                  <>
+                                  <div key={id}>
                                     <div className="loan__simulator__content__left__flex">
                                       <h4>
                                         {res.fieldDisplayName}
@@ -155,11 +215,7 @@ function LoanDetails() {
                                         )}
                                       </h4>
 
-                                      <input
-                                        type="number"
-                                        value={rangeYears}
-                                        disabled
-                                      />
+                                      <input value={rangeYears} disabled />
                                     </div>
                                     <div className="loan__simulator__content__left__range">
                                       <input
@@ -169,24 +225,28 @@ function LoanDetails() {
                                         max={maxYear}
                                         value={rangeYears}
                                         onChange={rangeYear}
+                                        className="slider"
                                       />
                                     </div>
                                     <div className="loan__simulator__content__left__range__values">
-                                      <p>{rangeYears}</p>
-                                      <p>{maxYear}Year</p>
+                                      <p>0</p>
+                                      <p>60</p>
                                     </div>
-                                  </>
+                                  </div>
                                 );
                               }
-                              if (
-                                res.fieldDisplayName === "Expected EMI amount"
-                              ) {
+                              if (res.fieldName === "expected_emi_amount") {
                                 return (
-                                  <div>
+                                  <div key={id}>
                                     <div className="loan__simulator__content__left__EIR">
                                       <label htmlFor="input">
                                         {res.fieldDisplayName}
-                                        <input id="input" type="text" />
+                                        <input
+                                          id="input"
+                                          type="text"
+                                          value={emiammount}
+                                          disabled
+                                        />
                                       </label>
                                     </div>
                                   </div>
@@ -199,36 +259,56 @@ function LoanDetails() {
                     <div className="loan__simulator__content__left__LP__flex">
                       <div className="loan__simulator__content__left__LP">
                         {RequiredLoanAmmount &&
-                          RequiredLoanAmmount.map((res) => {
-                            if (res.fieldDisplayName === "Loan Purpose") {
+                          RequiredLoanAmmount.map((res, id) => {
+                            if (res.fieldName === "loan_purpose") {
                               return (
-                                <label htmlFor="input">
-                                  {res.fieldDisplayName}
-                                  <select>
-                                    <option disabled>
-                                      Choose the purpose of loan
-                                    </option>
-                                    {res.options &&
-                                      res.options.map((option) => {
-                                        return (
-                                          <option value={option.value}>
-                                            {option.display}
-                                          </option>
-                                        );
-                                      })}
-                                  </select>
-                                </label>
+                                <div key={id}>
+                                  <label htmlFor="input">
+                                    {res.fieldDisplayName}
+                                    <select onChange={optionValue}>
+                                      <option
+                                        value=""
+                                        className="required__option"
+                                      >
+                                        Choose the purpose of loan
+                                      </option>
+                                      {res.options &&
+                                        res.options.map((option, id) => {
+                                          return (
+                                            <option
+                                              value={option.value}
+                                              key={id}
+                                            >
+                                              {option.display}
+                                            </option>
+                                          );
+                                        })}
+                                    </select>
+                                  </label>
+                                </div>
                               );
                             }
                           })}
                       </div>
+                      {Error && (
+                        <div>
+                          <p className="Details__error">
+                            <span>
+                              <img src={ErrorLogo} />
+                            </span>
+                            {Error}
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
             <div className="loanDetails__button__wrapper">
-              <button className="loanDetails__button">continue</button>
+              <button className="loanDetails__button" type="submit">
+                continue
+              </button>
             </div>
           </form>
         </div>

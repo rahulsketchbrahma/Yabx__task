@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Stepper.css";
+import check from "../../assets/Check.png";
 
 function Stepper(value) {
   const InitailColor = {
@@ -21,17 +22,19 @@ function Stepper(value) {
     LoanInfo: "greycolorValue",
   };
   const InitailProgressbar = {
-    loanSimulator: "greycolorValue",
-    PreviousLoan: "greycolorValue",
-    PersonalInfo: "greycolorValue",
-    Address: "greycolorValue",
-    Documents: "greycolorValue",
-    AdditionalInfo: "greycolorValue",
-    LoanInfo: "greycolorValue",
+    loanSimulator: "greycolorpValue",
+    PreviousLoan: "greycolorpValue",
+    PersonalInfo: "greycolorpValue",
+    Address: "greycolorpValue",
+    Documents: "greycolorpValue",
+    AdditionalInfo: "greycolorpValue",
+    LoanInfo: "greycolorpValue",
   };
 
   const [initialColor, setInitialColor] = useState(InitailColor);
   const [initailValue, setInitialValue] = useState(InitailValue);
+  const [initailProgressbar, setInitialProgressbar] =
+    useState(InitailProgressbar);
 
   useEffect(() => {
     if (value.initial === 1) {
@@ -40,20 +43,50 @@ function Stepper(value) {
         ...initailValue,
         loanSimulator: "greycolorValue redValue",
       });
+      setInitialProgressbar({
+        ...initailProgressbar,
+        loanSimulator: "greycolorpValue redpvalue",
+      });
+    }
+  }, [value]);
+  useEffect(() => {
+    if (value.initial === 2) {
+      setInitialColor({
+        ...initialColor,
+        loanSimulator: "greycolor red",
+        PreviousLoan: "greycolor red",
+      });
+      setInitialValue({
+        ...initailValue,
+        loanSimulator: "greycolorValue redValue",
+        PreviousLoan: "greycolorValue redValue",
+      });
+      setInitialProgressbar({
+        ...initailProgressbar,
+        PreviousLoan: "greycolorpValue redpvalue",
+      });
     }
   }, [value]);
 
   return (
-    <div>
+    <div className="stepper__component">
       <div className="stepper__wrapper">
         <div className="stepper__container">
           <div className="stepper">
-            <span className={`${initialColor.loanSimulator}`}>1</span>
-            <p className={`${initailValue.loanSimulator}`}>Loan Simulator</p>
+            <span className={`${initialColor.loanSimulator}`}>
+              {value.initial !== 1 ? <img src={check} /> : 1}
+            </span>
+            <div className="media__flex">
+              <p className={`${initailValue.loanSimulator}`}>Loan Simulator</p>
+              <p className="Props_name">{value.name}</p>
+              <span className="page__number">{value.initial}/6</span>
+            </div>
           </div>
           <div className="stepper">
             <span className={`${initialColor.PreviousLoan}`}>2</span>
-            <p className={`${initailValue.PersonalInfo}`}>Previous Loan</p>
+            <div className="media__flex">
+              <p className={`${initailValue.PreviousLoan}`}>Previous Loan</p>
+            </div>
           </div>
           <div className="stepper">
             <span className={`${initialColor.PersonalInfo}`}>3</span>
@@ -76,6 +109,15 @@ function Stepper(value) {
             <p className={`${initailValue.LoanInfo}`}>Loan Info</p>
           </div>
         </div>
+      </div>
+      <div className="Progress__bar">
+        <div className={`${initailProgressbar.loanSimulator}`}></div>
+        <div className={`${initailProgressbar.PreviousLoan}`}></div>
+        <div className={`${initailProgressbar.PersonalInfo}`}></div>
+        <div className={`${initailProgressbar.Address}`}></div>
+        <div className={`${initailProgressbar.Documents}`}></div>
+        <div className={`${initailProgressbar.AdditionalInfo}`}></div>
+        <div className={`${initailProgressbar.LoanInfo}`}></div>
       </div>
     </div>
   );
